@@ -3,9 +3,12 @@ package com.test.automation.tests.base;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.util.PropertiesUtil;
 import org.openqa.selenium.Alert;
@@ -38,6 +41,11 @@ public class BaseTest {
 
 	static WebDriverWait wait = null;
 
+	protected static String username;
+
+	protected static String password;
+	protected static String HomePageTitleexpected;
+
 	@BeforeMethod
 	@Parameters("browsername")
 	public static void setUpBeforeTestMethod(@Optional("firefox") String browser_name) {
@@ -45,10 +53,45 @@ public class BaseTest {
 		Properties prop = propUtility.createPropertyObject();
 		propUtility.loadFile("applicationDataProperties", prop);
 		String url = propUtility.getPropertyValue("url", prop);
+		username = propUtility.getPropertyValue("login.valid.userid", prop);
+		password = propUtility.getPropertyValue("login.valid.password", prop);
+		HomePageTitleexpected = propUtility.getPropertyValue("Home.page.title", prop);
+
 		launchbrowser(browser_name);
 		maximizeBrowser();
 		gotoUrl(url);
 
+	}
+
+	protected static void login() throws InterruptedException {
+		WebElement usernameEle = driver.findElement(By.id("username"));
+		waitforVisibilty(usernameEle, driver, 5, "userName Text Box");
+
+		usernameEle.sendKeys(username);
+
+		WebElement passwordEle = driver.findElement(By.xpath("//input[@id='password']"));
+
+		passwordEle.sendKeys(password);
+
+		WebElement loginEle = driver.findElement(By.xpath("//input[@id='Login']"));
+		loginEle.click();
+
+		Thread.sleep(3000);
+		String actualTitle = getPageTitle();
+		Assert.assertEquals(actualTitle, HomePageTitleexpected, " login Unsucessful");
+	}
+
+	
+	protected static void logout() throws Exception {
+		WebElement userNavBtn = driver.findElement(By.xpath("//div[@id='userNavButton']"));
+		waitforVisibilty(userNavBtn,driver,30,5,"click on User Nav Menu");
+		userNavBtn.click();
+		
+		WebElement logoutBtn = driver.findElement(By.xpath("//a[contains(text(),'Logout')]"));
+		waitforVisibilty(logoutBtn,driver,30,5,"click on logout");
+		logoutBtn.click();
+		Thread.sleep(2000);
+		
 	}
 
 	@AfterMethod
@@ -251,16 +294,15 @@ public class BaseTest {
 		}
 	}
 
-	
-	public static String getSelectedValueFromElement(WebElement element,String objectName)
-	{
+	public static String getSelectedValueFromElement(WebElement element, String objectName) {
 		waitforVisibilty(element, 5, objectName);
 		Select selectElement = new Select(element);
-		WebElement selectEle=selectElement.getFirstSelectedOption();
-		String selectedString=selectEle.getText();
+		WebElement selectEle = selectElement.getFirstSelectedOption();
+		String selectedString = selectEle.getText();
 		return selectedString;
-		
+
 	}
+
 	public static void selectValueByData(WebElement element, String text, String objName) {
 		waitforVisibilty(element, 5, objName);
 		Select selectCity = new Select(element);
@@ -320,6 +362,11 @@ public class BaseTest {
 		wait.until(ExpectedConditions.visibilityOf(objectElememt));
 	}
 
+	public static void setImplicitWait() {
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	}
+
+	// ******************************************************************************************************
 	public static void waitForAlertPresent(int time) {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(time));
 		wait.until(ExpectedConditions.alertIsPresent());
@@ -394,6 +441,21 @@ public class BaseTest {
 		System.out.println("switching frame to " + objectName);
 	}
 
+	public static void goToParentFrame() {
+		driver.switchTo().parentFrame();
+		System.out.println("Control back to Parent Frame");
+	}
+
+	public static void switchToFrame(String frameId) {
+		driver.switchTo().frame(frameId);
+		System.out.println("switched control to frame");
+	}
+
+	public static void checkIfFrameAvailableAndSwitch(WebElement element, String objectName) {
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element));
+	}
+
 	// *******************************************************************************************************************
 	public static void switchtoWindowHandle(String windowHandle, WebDriver driver) {
 		// String windowHandle = driver.getWindowHandle();
@@ -413,5 +475,12 @@ public class BaseTest {
 
 	}
 
-	
+	// *************************************************************************************************************************
+	public static String getTodayDate() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyMMddhhmm");
+		LocalDateTime now = LocalDateTime.now();
+		String s = now.format(dtf);
+		return s;
+	}
+
 }

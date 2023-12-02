@@ -5,8 +5,8 @@
     <classes>
       <class name="com.test.automation.tests.scripts.SalesForceContactsAutomation">
         <methods>
+          <include name="createNewContact"/>
           <include name="setUpBeforeTestMethod"/>
-          <include name="checkMyContact"/>
           <include name="tearDownAfterTestMethod"/>
         </methods>
       </class> <!-- com.test.automation.tests.scripts.SalesForceContactsAutomation -->

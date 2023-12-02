@@ -1,8 +1,5 @@
 package com.test.automation.tests.scripts;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,7 +13,7 @@ import org.testng.annotations.Test;
 import com.test.automation.tests.base.BaseTest;
 import com.test.automation.tests.utility.PropertiesUtility;
 
-import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
+
 
 public class SalesForceUserMenuAutomation extends BaseTest {
 
