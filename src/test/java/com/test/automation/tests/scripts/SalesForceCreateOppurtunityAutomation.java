@@ -32,7 +32,7 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 		String userName = propUtility.getPropertyValue("login.valid.userid", prop);
 		String password = propUtility.getPropertyValue("login.valid.password", prop);
 		String expected = propUtility.getPropertyValue("Home.page.title", prop);
-		
+
 		Thread.sleep(5000);
 		WebElement usernameEle = driver.findElement(By.id("username"));
 		waitforVisibilty(usernameEle, driver, 5, "userName Text Box");
@@ -172,7 +172,6 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 		String expected = propUtility.getPropertyValue("Home.page.title", prop);
 		String expectedReportHeader = propUtility.getPropertyValue("report.header.title", prop);
 		String expectedPipelineHeader = propUtility.getPropertyValue("oppurtunity.pipeline.header.title", prop);
-		
 
 		Thread.sleep(5000);
 		WebElement usernameEle = driver.findElement(By.id("username"));
@@ -218,7 +217,8 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 		WebElement OppurtunityPipelineElement = driver
 				.findElement(By.xpath("//h1[contains(text(),'Opportunity Pipeline')]"));
 		waitforVisibilty(OppurtunityPipelineElement, 10, "  oppurtunity pipeline HeaderName");
-		String actualStuckHeader = getTextFromElement(OppurtunityPipelineElement, " oppurtunity pipeline Report Header Text");
+		String actualStuckHeader = getTextFromElement(OppurtunityPipelineElement,
+				" oppurtunity pipeline Report Header Text");
 		Assert.assertEquals(actualStuckHeader, expectedPipelineHeader,
 				"failed : Stuck oppurtunity Header title no matching");
 
@@ -287,7 +287,7 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 				"failed : Stuck oppurtunity Header title no matching");
 
 	}
-	
+
 	@Test
 	public static void QuarterlySummaryLink() throws InterruptedException {
 		System.out.println(
@@ -300,7 +300,7 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 		String password = propUtility.getPropertyValue("login.valid.password", prop);
 		String expected = propUtility.getPropertyValue("Home.page.title", prop);
 		String expectedQuartelySummaryHeader = propUtility.getPropertyValue("quartely.summary.header.title", prop);
-		String expectedOppurtunityReportHeader=propUtility.getPropertyValue("oppurtunity.report.header.title", prop);
+		String expectedOppurtunityReportHeader = propUtility.getPropertyValue("oppurtunity.report.header.title", prop);
 
 		Thread.sleep(5000);
 		WebElement usernameEle = driver.findElement(By.id("username"));
@@ -329,33 +329,36 @@ public class SalesForceCreateOppurtunityAutomation extends BaseTest {
 
 		WebElement oppurtunityLinkElement = driver.findElement(By.xpath("//tbody/tr[13]/td[2]/a[1]"));
 		clickElement(oppurtunityLinkElement, "oppurtunity");
-		
+
 		switchtoWindowHandle(driver.getWindowHandle(), driver);
 
 		WebElement QuartelySummaryElement = driver.findElement(By.xpath("//h3[contains(text(),'Quarterly Summary')]"));
 		waitforVisibilty(QuartelySummaryElement, 10, "Quartely Summary  HeaderName");
-		String actualQuarterlySummaryHeader = getTextFromElement(QuartelySummaryElement, "Quartely Summary  HeaderName Text");
-		Assert.assertEquals(actualQuarterlySummaryHeader, expectedQuartelySummaryHeader, "failed : Quartely Summary Header title no matching");
+		String actualQuarterlySummaryHeader = getTextFromElement(QuartelySummaryElement,
+				"Quartely Summary  HeaderName Text");
+		Assert.assertEquals(actualQuarterlySummaryHeader, expectedQuartelySummaryHeader,
+				"failed : Quartely Summary Header title no matching");
 
-		String Intervaldata="Current FQ";
+		String Intervaldata = "Current FQ";
 		WebElement IntervalElement = driver.findElement(By.xpath("//select[@id='quarter_q']"));
-		selectByVisibleText(IntervalElement,Intervaldata , "Interval select");
-		
+		selectByVisibleText(IntervalElement, Intervaldata, "Interval select");
+
 		WebElement IncludeElement = driver.findElement(By.xpath("//select[@id='open']"));
 		selectByVisibleText(IncludeElement, "Open Opportunities", "Include select");
-		
+
 		WebElement runReportElement = driver.findElement(By.xpath("//tbody/tr[3]/td[1]/input[1]"));
 		clickElement(runReportElement, "run Report");
-		
-		switchtoWindowHandle(driver.getWindowHandle(), driver);
-		
-		WebElement oppurtunityReportElement = driver.findElement(By.xpath("//h1[contains(text(),'Opportunity Report')]"));
-		waitforVisibilty(oppurtunityReportElement, 10, "oppurtunity Report    HeaderName");
-		String actualOppurtunityReportHeader = getTextFromElement(oppurtunityReportElement, "oppurtunity Report    HeaderName Text");
-		Assert.assertEquals(actualOppurtunityReportHeader, expectedOppurtunityReportHeader, "failed : Oppurtunity Report Header title no matching");
-		
-				
-	}
 
+		switchtoWindowHandle(driver.getWindowHandle(), driver);
+
+		WebElement oppurtunityReportElement = driver
+				.findElement(By.xpath("//h1[contains(text(),'Opportunity Report')]"));
+		waitforVisibilty(oppurtunityReportElement, 10, "oppurtunity Report    HeaderName");
+		String actualOppurtunityReportHeader = getTextFromElement(oppurtunityReportElement,
+				"oppurtunity Report    HeaderName Text");
+		Assert.assertEquals(actualOppurtunityReportHeader, expectedOppurtunityReportHeader,
+				"failed : Oppurtunity Report Header title no matching");
+
+	}
 
 }

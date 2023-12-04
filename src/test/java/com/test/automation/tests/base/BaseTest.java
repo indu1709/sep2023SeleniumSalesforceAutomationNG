@@ -332,6 +332,7 @@ public class BaseTest {
 		System.out.println(objectName + "is waiting for visibility  for explicit wait");
 	}
 
+	//Fluent wait
 	public static void waitforVisibilty(WebElement element, WebDriver driver, int time, int pollingtime,
 			String objectName) {
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver);
